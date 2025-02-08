@@ -3,6 +3,7 @@ const electron = require("electron");
 // INFO: the renderer process has no Node.js or Electron module access. As an app developer, you need to choose which APIs to expose from your preload script using the contextBridge API.
 electron.contextBridge.exposeInMainWorld("electron", {
   sendFrameAction: (payload) => ipcSend("sendFrameAction", payload),
+  openFiles: () => ipcInvoke("openFiles")
 } satisfies Window["electron"]);
 
 // INFO: Renderer to main (two-way). ipcMainHandle is the handler

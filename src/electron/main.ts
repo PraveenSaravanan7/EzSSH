@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, dialog, Menu } from "electron";
 import { ipcMainHandle, ipcMainOn, isDev } from "./util.js";
 import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
@@ -61,4 +61,15 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
   mainWindow.on("show", () => {
     willClose = false;
   });
+}
+
+ipcMainHandle("openFiles", () => {
+  return openFiles();
+});
+
+async function openFiles() {
+  const result = await dialog.showOpenDialog({
+    properties: ["openFile"],
+  });
+  return result;
 }
