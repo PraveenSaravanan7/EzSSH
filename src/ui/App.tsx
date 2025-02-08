@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 const App = () => {
-  const [showAddScreen, setShowAddScreen] = useState(false);
+  const [showAddScreen, setShowAddScreen] = useState(true);
 
   return (
     <>
@@ -28,10 +28,11 @@ const App = () => {
 
 const Add = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [host, setHost] = useState("");
-  const [username, setUsername] = useState("");
+  const [host, setHost] = useState("test.rebex.net");
+  const [username, setUsername] = useState("demo");
   const [port, setPort] = useState("22");
   const [keyFilePath, setKeyFilePath] = useState("");
+  const [logs, setLogs] = useState("test logs");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -42,7 +43,7 @@ const Add = () => {
       sshCommand += ` -i "${keyFilePath}"`;
     }
 
-    alert(sshCommand);
+    window.electron.runShhCmd(sshCommand);
   };
 
   const handleFileSelect = async () => {
@@ -51,6 +52,12 @@ const Add = () => {
       setKeyFilePath(result.filePaths[0]); // Get file path
     }
   };
+
+  useEffect(() => {
+    window.electron.subscribeToLogs((log) =>
+      setLogs((prev) => prev + log + "\n")
+    );
+  }, []);
 
   return (
     <div>
@@ -93,6 +100,8 @@ const Add = () => {
           Generate SSH Command
         </button>
       </form>
+
+      <div id="logs">{logs}</div>
     </div>
   );
 };

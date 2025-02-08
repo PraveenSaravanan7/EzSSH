@@ -1,8 +1,11 @@
 import { app, BrowserWindow, dialog, Menu } from "electron";
-import { ipcMainHandle, ipcMainOn, isDev } from "./util.js";
+import { ipcMainHandle, ipcMainOn, ipcWebContentsSend, isDev } from "./util.js";
 import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
+import { exec, spawn } from "child_process";
+
+let process = spawn("ssh", ["demo@test.rebex.net"]);
 
 app.on("ready", () => {
   const mainWindow = new BrowserWindow({
@@ -35,9 +38,15 @@ app.on("ready", () => {
     }
   });
 
+  ipcMainOn("runShhCmd", (payload) => {
+    console.log(payload);
+    // process = exec(payload);
+  });
+
   createTray(mainWindow);
   handleCloseEvents(mainWindow);
   createMenu(mainWindow);
+  handleShhCmd(mainWindow);
 });
 
 function handleCloseEvents(mainWindow: BrowserWindow) {
@@ -72,4 +81,27 @@ async function openFiles() {
     properties: ["openFile"],
   });
   return result;
+}
+
+function handleShhCmd(mainWindow: BrowserWindow) {
+  let output = "";
+
+  process.stdout.on("data", (data: Buffer) => {
+    output += data.toString();
+    console.log("-=----------");
+    console.log(data.toString());
+    ipcWebContentsSend("ssh-log", mainWindow.webContents, data.toString());
+  });
+
+  process.stderr.on("data", (data: string) => {
+    output += data.toString();
+    console.log("-=----------");
+    console.log(data.toString());
+    ipcWebContentsSend("ssh-log", mainWindow.webContents, data.toString());
+  });
+
+  process.on("close", (code: string) => {
+    // resolve({ output, exitCode: code });
+    console.log({ output, exitCode: code });
+  });
 }
