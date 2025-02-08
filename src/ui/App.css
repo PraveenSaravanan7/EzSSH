@@ -1,0 +1,32 @@
+.app {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 240px;
+  height: 100%;
+  padding: 16px;
+  background-color: rgb(57, 57, 57);
+}
+
+.itemContainer > div {
+  display: flex;
+}
+
+.button {
+  background-color: #007bff; /* Bright blue */
+  color: white; /* White text */
+  font-size: 1.2rem; /* Large text */
+  padding: 12px 24px; /* Comfortable padding */
+  border: none; /* No border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  text-align: center;
+  font-weight: bold;
+}
