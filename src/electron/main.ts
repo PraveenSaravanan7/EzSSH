@@ -3,9 +3,17 @@ import { ipcMainHandle, ipcMainOn, ipcWebContentsSend, isDev } from "./util.js";
 import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
-import { exec, spawn } from "child_process";
+import os from "os";
+import pty from "node-pty";
 
-let process = spawn("ssh", ["demo@test.rebex.net"]);
+const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
+
+// Spawn the pseudoterminal
+const ptyProcess = pty.spawn(shell, [], {
+  name: "xterm-color",
+  cwd: process.env.HOME, // Starting directory
+  env: process.env, // Environment variables
+});
 
 app.on("ready", () => {
   const mainWindow = new BrowserWindow({
@@ -40,7 +48,11 @@ app.on("ready", () => {
 
   ipcMainOn("runShhCmd", (payload) => {
     console.log(payload);
-    // process = exec(payload);
+    ptyProcess.write(payload + "\r");
+
+    setTimeout(() => {
+      ptyProcess.write("password\r");
+    }, 5000);
   });
 
   createTray(mainWindow);
@@ -84,24 +96,11 @@ async function openFiles() {
 }
 
 function handleShhCmd(mainWindow: BrowserWindow) {
-  let output = "";
-
-  process.stdout.on("data", (data: Buffer) => {
-    output += data.toString();
-    console.log("-=----------");
-    console.log(data.toString());
-    ipcWebContentsSend("ssh-log", mainWindow.webContents, data.toString());
+  ptyProcess.onData((data: any) => {
+    ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
   });
 
-  process.stderr.on("data", (data: string) => {
-    output += data.toString();
-    console.log("-=----------");
-    console.log(data.toString());
-    ipcWebContentsSend("ssh-log", mainWindow.webContents, data.toString());
-  });
-
-  process.on("close", (code: string) => {
-    // resolve({ output, exitCode: code });
-    console.log({ output, exitCode: code });
+  ptyProcess.onExit((e: any) => {
+    console.log("PTY process exited with code:", e);
   });
 }
