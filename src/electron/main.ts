@@ -48,11 +48,7 @@ app.on("ready", () => {
 
   ipcMainOn("runShhCmd", (payload) => {
     console.log(payload);
-    ptyProcess.write(payload + "\r");
-
-    setTimeout(() => {
-      ptyProcess.write("password\r");
-    }, 5000);
+    ptyProcess.write(payload);
   });
 
   createTray(mainWindow);

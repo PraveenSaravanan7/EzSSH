@@ -6,9 +6,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
   openFiles: () => ipcInvoke("openFiles"),
   runShhCmd: (payload) => ipcSend("runShhCmd", payload),
   subscribeToLogs: (callback) => {
-    console.log("-------subscribeToLogs");
     ipcOn("ssh-log", (log) => {
-      console.log("--------ssh-l");
       callback(log);
     });
   },

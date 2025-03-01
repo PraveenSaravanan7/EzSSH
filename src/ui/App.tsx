@@ -1,8 +1,29 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { Terminal } from "xterm";
+import { FitAddon } from "@xterm/addon-fit";
+
+const term = new Terminal();
+const fitAddon = new FitAddon();
+
+term.loadAddon(fitAddon);
 
 const App = () => {
   const [showAddScreen, setShowAddScreen] = useState(true);
+
+  useEffect(() => {
+    if (showAddScreen) return;
+
+    term.open(document.getElementById("terminal") as any);
+
+    fitAddon.fit();
+
+    term.onData((e) => {
+      window.electron.runShhCmd(e);
+    });
+
+    window.electron.subscribeToLogs((log) => term.write(log));
+  }, [showAddScreen]);
 
   return (
     <>
@@ -20,13 +41,23 @@ const App = () => {
             </button>
           </div>
         </div>
-        {showAddScreen ? <Add></Add> : <div className="terminal"></div>}
+        {showAddScreen ? (
+          <Add setShowAddScreen={(d: boolean) => setShowAddScreen(d)}></Add>
+        ) : (
+          <div>
+            <div id="terminal" className="terminal"></div>
+          </div>
+        )}
       </div>
     </>
   );
 };
 
-const Add = () => {
+const Add = ({
+  setShowAddScreen,
+}: {
+  setShowAddScreen: (d: boolean) => void;
+}) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [host, setHost] = useState("test.rebex.net");
   const [username, setUsername] = useState("demo");
@@ -43,7 +74,9 @@ const Add = () => {
       sshCommand += ` -i "${keyFilePath}"`;
     }
 
-    window.electron.runShhCmd(sshCommand);
+    setShowAddScreen(false);
+
+    window.electron.runShhCmd(sshCommand + "\r");
   };
 
   const handleFileSelect = async () => {
@@ -53,11 +86,7 @@ const Add = () => {
     }
   };
 
-  useEffect(() => {
-    window.electron.subscribeToLogs((log) =>
-      setLogs((prev) => prev + log + "\n")
-    );
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
