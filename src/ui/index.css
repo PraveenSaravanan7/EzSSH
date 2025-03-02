@@ -35,7 +35,6 @@ button {
   cursor: pointer; /* Pointer cursor on hover */
   font-size: 16px; /* Font size */
   transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
-  width: 100%;
   line-height: 18px;
 }
 
@@ -45,5 +44,5 @@ button:hover {
 }
 
 button:active {
-  background-color: #8c8c8c; 
+  background-color: #8c8c8c;
 }

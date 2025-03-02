@@ -1,5 +1,15 @@
-import React from "react";
+import "./AddConnection.css";
 
-export const AddConnection = () => {
-  return <div>AddConnection</div>;
+interface IAddConnectionProps {
+  onCancel: () => void;
+}
+
+export const AddConnection = ({ onCancel }: IAddConnectionProps) => {
+  return (
+    <div className="addConnection">
+      <div>
+        <button onClick={onCancel}>Cancel</button>
+      </div>
+    </div>
+  );
 };

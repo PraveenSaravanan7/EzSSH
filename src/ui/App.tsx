@@ -13,9 +13,13 @@ const App = () => {
     <>
       <Header />
       <div className="app">
-        <ConnectionList />
+        <ConnectionList
+          showAddConnectionForm={() => setShowAddConnection(true)}
+        />
 
-        {showAddConnection && <AddConnection />}
+        {showAddConnection && (
+          <AddConnection onCancel={() => setShowAddConnection(false)} />
+        )}
         {!!activeConnection && <Terminal />}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}
       </div>
