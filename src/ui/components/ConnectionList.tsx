@@ -3,7 +3,10 @@ import "./ConnectionList.css";
 export const ConnectionList = () => {
   return (
     <div className="connectionList">
-      <span>Connections</span>
+      <div></div>
+      <div className="addButtonContainer" >
+        <button>+ Add</button>
+      </div>
     </div>
   );
 };

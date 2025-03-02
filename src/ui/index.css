@@ -1,9 +1,9 @@
 * {
   box-sizing: border-box;
+  font-family: monospace;
 }
 
 :root {
-  font-family: monospace;
   font-size: 1rem;
   line-height: 1rem;
   font-weight: 400;
@@ -22,4 +22,28 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+/* Simple white button styling */
+button {
+  background-color: #ececec; /* White background */
+  color: #070707; /* Dark text color */
+  font-weight: 600;
+  padding: 8px 12px; /* Padding */
+  border: 0;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
+  width: 100%;
+  line-height: 18px;
+}
+
+button:hover {
+  background-color: #fff; /* Light gray background on hover */
+  color: #000;
+}
+
+button:active {
+  background-color: #8c8c8c; 
 }

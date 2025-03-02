@@ -26,7 +26,7 @@ const App = () => {
 const WelcomeMessage = () => {
   return (
     <div className="welcomeMessage">
-      <h1>EzSSH</h1>
+      <span>EzSSH</span>
     </div>
   );
 };
