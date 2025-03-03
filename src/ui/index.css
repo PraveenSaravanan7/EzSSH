@@ -36,6 +36,9 @@ button {
   font-size: 16px; /* Font size */
   transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
   line-height: 18px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ececec;
 }
 
 button:hover {
@@ -45,4 +48,32 @@ button:hover {
 
 button:active {
   background-color: #8c8c8c;
+}
+
+button.secondary {
+  color: #ececec;
+  background-color: #070707;
+}
+
+button.secondary:hover {
+  background-color: #000; /* Light gray background on hover */
+  color: #fff;
+}
+
+button.secondary:active {
+  background-color: #727272;
+}
+
+input {
+  height: 32px;
+  padding: 4px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ececec;
+  outline: 0;
+}
+
+input:focus {
+  border-color: #fff;
 }

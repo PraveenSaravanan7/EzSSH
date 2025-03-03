@@ -9,7 +9,9 @@ export const ConnectionList = ({
 }: IConnectionListProps) => {
   return (
     <div className="connectionList">
-      <div></div>
+      <div>
+        <h2>Connections</h2>
+      </div>
       <div className="addButtonContainer">
         <button style={{ width: "100%" }} onClick={showAddConnectionForm}>
           + Add
