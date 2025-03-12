@@ -10,7 +10,7 @@ export const ConnectionList = ({
   return (
     <div className="connectionList">
       <div>
-        <h2>Connections</h2>
+        <h3>Saved Connections</h3>
       </div>
       <div className="addButtonContainer">
         <button style={{ width: "100%" }} onClick={showAddConnectionForm}>
