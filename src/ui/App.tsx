@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { ConnectionList } from "./components/ConnectionList";
 import { Header } from "./components/Header";
@@ -9,16 +9,37 @@ const App = () => {
   const [showAddConnection, setShowAddConnection] = useState(false);
   const [activeConnection, setActiveConnection] = useState("");
 
+  const [connections, setConnections] = useState<ConnectionData[]>([]);
+
+  // useEffect(() => {
+  //   const fetchConnections = async () => {
+  //     const connections = dataSt.get('connections');
+  //     setConnections(connections || []);
+  //   };
+
+  //   fetchConnections();
+  // }, []);
+
+  const onSave = async (connectionData: ConnectionData) => {
+    console.log(connectionData);
+    const connections = await window.electron.saveConnection(connectionData);
+    setConnections(connections);
+  };
+
   return (
     <>
       <Header />
       <div className="app">
         <ConnectionList
+          connections={connections}
           showAddConnectionForm={() => setShowAddConnection(true)}
         />
 
         {showAddConnection && (
-          <AddConnection onCancel={() => setShowAddConnection(false)} />
+          <AddConnection
+            onSave={onSave}
+            onCancel={() => setShowAddConnection(false)}
+          />
         )}
         {!!activeConnection && <Terminal />}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}

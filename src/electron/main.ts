@@ -5,6 +5,7 @@ import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
 import os from "os";
 import pty from "node-pty";
+import { dataStore } from "./store.js";
 
 const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
 
@@ -80,16 +81,26 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
   });
 }
 
-ipcMainHandle("openFiles", () => {
-  return openFiles();
-});
-
-async function openFiles() {
+ipcMainHandle("openFiles", async () => {
   const result = await dialog.showOpenDialog({
     properties: ["openFile"],
   });
+
   return result;
-}
+});
+
+ipcMainHandle("saveConnection", async (connectionData: ConnectionData) => {
+  try {
+    const connections = dataStore.get("connections") || [];
+    connections.push(connectionData);
+    dataStore.set("connections", connections);
+
+    return connections;
+  } catch (error) {
+    console.error("Error saving connection:", error);
+    throw error;
+  }
+});
 
 function handleShhCmd(mainWindow: BrowserWindow) {
   ptyProcess.onData((data: any) => {
