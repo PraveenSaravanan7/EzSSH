@@ -11,14 +11,14 @@ const App = () => {
 
   const [connections, setConnections] = useState<ConnectionData[]>([]);
 
-  // useEffect(() => {
-  //   const fetchConnections = async () => {
-  //     const connections = dataSt.get('connections');
-  //     setConnections(connections || []);
-  //   };
+  const fetchConnections = async () => {
+    const connections = await window.electron.fetchConnections();
+    setConnections(connections || []);
+  };
 
-  //   fetchConnections();
-  // }, []);
+  useEffect(() => {
+    fetchConnections();
+  }, []);
 
   const onSave = async (connectionData: ConnectionData) => {
     console.log(connectionData);

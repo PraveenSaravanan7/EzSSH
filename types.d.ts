@@ -20,6 +20,7 @@ interface Window {
     saveConnection: (
       connectionData: ConnectionData
     ) => Promise<ConnectionData[]>;
+    fetchConnections: () => Promise<ConnectionData[]>;
   };
 }
 

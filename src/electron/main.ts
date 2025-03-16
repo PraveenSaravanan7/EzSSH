@@ -102,6 +102,15 @@ ipcMainHandle("saveConnection", async (connectionData: ConnectionData) => {
   }
 });
 
+ipcMainHandle("fetchConnections", () => {
+  try {
+    return dataStore.get("connections") || [];
+  } catch (error) {
+    console.error("Error saving connection:", error);
+    throw error;
+  }
+});
+
 function handleShhCmd(mainWindow: BrowserWindow) {
   ptyProcess.onData((data: any) => {
     ipcWebContentsSend("ssh-log", mainWindow.webContents, data);

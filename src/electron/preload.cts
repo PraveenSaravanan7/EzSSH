@@ -12,6 +12,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
   },
   saveConnection: async (connectionData) =>
     ipcInvoke("saveConnection", connectionData),
+  fetchConnections: () => ipcInvoke("fetchConnections")
 } satisfies Window["electron"]);
 
 // INFO: Renderer to main (two-way). ipcMainHandle is the handler
