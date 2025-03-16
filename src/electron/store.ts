@@ -28,3 +28,5 @@ const schema: Schema<StoreSchema> = {
 };
 
 export const dataStore = new Store<StoreSchema>({ schema });
+
+// dataStore.clear()
