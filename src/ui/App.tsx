@@ -24,6 +24,7 @@ const App = () => {
     console.log(connectionData);
     const connections = await window.electron.saveConnection(connectionData);
     setConnections(connections);
+    setShowAddConnection(false);
   };
 
   return (

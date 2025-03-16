@@ -6,13 +6,15 @@ const schema: Schema<StoreSchema> = {
     items: {
       type: "object",
       properties: {
+        id: { type: "string" },
+        name: { type: "string" },
         host: { type: "string" },
         port: { type: "string" },
         username: { type: "string" },
         password: { type: "string" },
         keyFilePath: { type: "string" },
       },
-      required: ["host", "port", "username"],
+      required: ["name", "host", "port", "username"],
     },
   },
   userInfo: {

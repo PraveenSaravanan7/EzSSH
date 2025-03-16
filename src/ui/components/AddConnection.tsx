@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./AddConnection.css";
+import { v4 as uuid } from "uuid";
 
 interface IAddConnectionProps {
   onCancel: () => void;
@@ -7,6 +8,7 @@ interface IAddConnectionProps {
 }
 
 export const AddConnection = ({ onCancel, onSave }: IAddConnectionProps) => {
+  const [name, setName] = useState("");
   const [host, setHost] = useState("");
   const [port, setPort] = useState("");
   const [username, setUsername] = useState("");
@@ -20,6 +22,8 @@ export const AddConnection = ({ onCancel, onSave }: IAddConnectionProps) => {
     }
 
     const connectionData = {
+      id: uuid(),
+      name,
       host,
       port,
       username,
@@ -42,6 +46,14 @@ export const AddConnection = ({ onCancel, onSave }: IAddConnectionProps) => {
       <h2>New Connection</h2>
 
       <div className="connectionConfigForm">
+        <div>
+          <div className="label">Name</div>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <div className="group">
           <div>
             <div className="label">Host</div>
@@ -91,7 +103,12 @@ export const AddConnection = ({ onCancel, onSave }: IAddConnectionProps) => {
             />
             <button
               onClick={handleFileSelect}
-              style={{ marginLeft: "10px", height: "32px", fontSize: "14px", padding: "0px 8px" }}
+              style={{
+                marginLeft: "10px",
+                height: "32px",
+                fontSize: "14px",
+                padding: "0px 8px",
+              }}
             >
               Browse
             </button>

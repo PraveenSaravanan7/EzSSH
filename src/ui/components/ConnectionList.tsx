@@ -19,7 +19,10 @@ export const ConnectionList = ({
         {connections.map((connection, index) => (
           <div className="connectionItem" key={index}>
             <div>
-              {connection.username}@{connection.host}:{connection.port}
+              <div className="connectionName"> {connection.name}</div>
+              <div className="connectionInfo">
+                {connection.username}@{connection.host}:{connection.port}
+              </div>
             </div>
           </div>
         ))}
