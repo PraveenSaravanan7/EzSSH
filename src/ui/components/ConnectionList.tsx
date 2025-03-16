@@ -12,18 +12,19 @@ export const ConnectionList = ({
   return (
     <div className="connectionList">
       <div>
-        <h3>Saved Connections</h3>
-
-        <ul>
-          {connections.map((connection, index) => (
-            <li key={index}>
-              <span>Host: {connection.host}</span>
-              <span>Port: {connection.port}</span>
-              <span>Username: {connection.username}</span>
-            </li>
-          ))}
-        </ul>
+        <h3 style={{ marginTop: "8px" }}>Saved Connections</h3>
       </div>
+
+      <div className="connectionItemsContainer">
+        {connections.map((connection, index) => (
+          <div className="connectionItem" key={index}>
+            <div>
+              {connection.username}@{connection.host}:{connection.port}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="addButtonContainer">
         <button style={{ width: "100%" }} onClick={showAddConnectionForm}>
           + Add
