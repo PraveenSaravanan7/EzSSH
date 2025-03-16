@@ -3,11 +3,15 @@ import "./ConnectionList.css";
 interface IConnectionListProps {
   showAddConnectionForm: () => void;
   connections: ConnectionData[];
+  activeConnection?: ConnectionData;
+  setActiveConnection: (activeConnection: ConnectionData) => void;
 }
 
 export const ConnectionList = ({
   showAddConnectionForm,
   connections,
+  activeConnection,
+  setActiveConnection,
 }: IConnectionListProps) => {
   return (
     <div className="connectionList">
@@ -17,7 +21,13 @@ export const ConnectionList = ({
 
       <div className="connectionItemsContainer">
         {connections.map((connection, index) => (
-          <div className="connectionItem" key={index}>
+          <div
+            className={`connectionItem ${
+              activeConnection?.id == connection.id ? "active" : ""
+            }`}
+            key={index}
+            onClick={() => setActiveConnection(connection)}
+          >
             <div>
               <div className="connectionName"> {connection.name}</div>
               <div className="connectionInfo">

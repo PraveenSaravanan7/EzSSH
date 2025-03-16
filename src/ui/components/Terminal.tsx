@@ -1,5 +1,9 @@
 import React from "react";
 
-export const Terminal = () => {
+interface ITerminalProps {
+  connection: ConnectionData;
+}
+
+export const Terminal = ({ connection }: ITerminalProps) => {
   return <div>Terminal</div>;
 };

@@ -31,10 +31,17 @@
   flex-direction: column;
   row-gap: 12px;
   padding-bottom: 30px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.connectionItemsContainer .active {
+  background-color: #ececec;
+  color: #070707;
 }
 
 .connectionName {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
   overflow: hidden;
@@ -48,4 +55,5 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 200px;
+  font-size: 14px;
 }

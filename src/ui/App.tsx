@@ -7,7 +7,7 @@ import { Terminal } from "./components/Terminal";
 
 const App = () => {
   const [showAddConnection, setShowAddConnection] = useState(false);
-  const [activeConnection, setActiveConnection] = useState("");
+  const [activeConnection, setActiveConnection] = useState<ConnectionData>();
 
   const [connections, setConnections] = useState<ConnectionData[]>([]);
 
@@ -34,6 +34,10 @@ const App = () => {
         <ConnectionList
           connections={connections}
           showAddConnectionForm={() => setShowAddConnection(true)}
+          activeConnection={activeConnection}
+          setActiveConnection={(activeConnection) =>
+            setActiveConnection(activeConnection)
+          }
         />
 
         {showAddConnection && (
@@ -42,7 +46,7 @@ const App = () => {
             onCancel={() => setShowAddConnection(false)}
           />
         )}
-        {!!activeConnection && <Terminal />}
+        {!!activeConnection && <Terminal connection={activeConnection} />}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}
       </div>
     </>
