@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "@xterm/addon-fit";
+import "xterm/css/xterm.css";
 
 const term = new Terminal();
 const fitAddon = new FitAddon();
@@ -12,7 +13,7 @@ const App = () => {
   const [showAddScreen, setShowAddScreen] = useState(true);
 
   useEffect(() => {
-    if (showAddScreen) return;
+    // if (showAddScreen) return;
 
     term.open(document.getElementById("terminal") as any);
 
@@ -26,30 +27,26 @@ const App = () => {
   }, [showAddScreen]);
 
   return (
-    <>
-      <Header />
-      <div className="app">
-        <div className="itemContainer">
-          <div></div>
-          <div>
-            <button
-              onClick={() => setShowAddScreen((prev) => !prev)}
-              className="button"
-              style={{ width: "100%" }}
-            >
-              + Add
-            </button>
-          </div>
-        </div>
-        {showAddScreen ? (
-          <Add setShowAddScreen={(d: boolean) => setShowAddScreen(d)}></Add>
-        ) : (
-          <div>
-            <div id="terminal" className="terminal"></div>
-          </div>
-        )}
+    <div
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: 0,
+      }}
+    >
+      <div
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <div id="terminal"></div>
       </div>
-    </>
+    </div>
   );
 };
 
