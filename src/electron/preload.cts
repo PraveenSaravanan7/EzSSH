@@ -10,13 +10,17 @@ electron.contextBridge.exposeInMainWorld("electron", {
       callback(log);
     });
   },
+  saveConnection: async (connectionData) =>
+    ipcInvoke("saveConnection", connectionData),
+  fetchConnections: () => ipcInvoke("fetchConnections")
 } satisfies Window["electron"]);
 
 // INFO: Renderer to main (two-way). ipcMainHandle is the handler
-function ipcInvoke<Key extends keyof EventPayloadMapping>(
-  key: Key
+function ipcInvoke<Key extends keyof EventPayloadMapping, Args extends any[]>(
+  key: Key,
+  ...args: Args
 ): Promise<EventPayloadMapping[Key]> {
-  return electron.ipcRenderer.invoke(key);
+  return electron.ipcRenderer.invoke(key, ...args);
 }
 
 function ipcOn<Key extends keyof EventPayloadMapping>(

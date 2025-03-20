@@ -5,17 +5,13 @@ import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
 import os from "os";
 import pty from "node-pty";
-
-const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
-
-// Spawn the pseudoterminal
-const ptyProcess = pty.spawn(shell, [], {
-  name: "xterm-color",
-  cwd: process.env.HOME, // Starting directory
-  env: process.env, // Environment variables
-});
+import { dataStore } from "./store.js";
 
 app.on("ready", () => {
+  const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
+
+  const ptyProcessMap: Record<string, pty.IPty> = {};
+
   const mainWindow = new BrowserWindow({
     webPreferences: {
       preload: getPreloadPath(),
@@ -47,14 +43,30 @@ app.on("ready", () => {
   });
 
   ipcMainOn("runShhCmd", (payload) => {
-    console.log(payload);
-    ptyProcess.write(payload);
+    if (!ptyProcessMap[payload.id]) {
+      const ptyProcess = pty.spawn(shell, [], {
+        // name: "xterm-color",
+        cwd: process.env.HOME,
+        env: process.env,
+      });
+
+      ptyProcess.onData((data: any) => {
+        ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
+      });
+
+      ptyProcess.onExit((e: any) => {
+        console.log(`PTY process ${payload.id} exited with code: `, e);
+      });
+
+      ptyProcessMap[payload.id] = ptyProcess;
+    }
+
+    ptyProcessMap[payload.id]?.write(payload.cmd);
   });
 
   createTray(mainWindow);
   handleCloseEvents(mainWindow);
   createMenu(mainWindow);
-  handleShhCmd(mainWindow);
 });
 
 function handleCloseEvents(mainWindow: BrowserWindow) {
@@ -80,23 +92,32 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
   });
 }
 
-ipcMainHandle("openFiles", () => {
-  return openFiles();
-});
-
-async function openFiles() {
+ipcMainHandle("openFiles", async () => {
   const result = await dialog.showOpenDialog({
     properties: ["openFile"],
   });
+
   return result;
-}
+});
 
-function handleShhCmd(mainWindow: BrowserWindow) {
-  ptyProcess.onData((data: any) => {
-    ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
-  });
+ipcMainHandle("saveConnection", async (connectionData: ConnectionData) => {
+  try {
+    const connections = dataStore.get("connections") || [];
+    connections.push(connectionData);
+    dataStore.set("connections", connections);
 
-  ptyProcess.onExit((e: any) => {
-    console.log("PTY process exited with code:", e);
-  });
-}
+    return connections;
+  } catch (error) {
+    console.error("Error saving connection:", error);
+    throw error;
+  }
+});
+
+ipcMainHandle("fetchConnections", () => {
+  try {
+    return dataStore.get("connections") || [];
+  } catch (error) {
+    console.error("Error saving connection:", error);
+    throw error;
+  }
+});
