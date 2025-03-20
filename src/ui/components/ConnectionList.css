@@ -18,9 +18,17 @@
 
 .connectionItem {
   display: flex;
-  padding: 12px;
-  background-color: #070707;
-  border-radius: 8px;
+  padding: 12px 8px;
+  border-top: 1px solid #717171;
+  /* background-color: #070707; */
+}
+
+.connectionItemsContainer > .connectionItem:first-child {
+  border-top: 0;
+}
+
+.connectionItem.active + .connectionItem {
+  border-top: 0;
 }
 
 .connectionItemsContainer {
@@ -29,7 +37,7 @@
   white-space: nowrap;
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  /* row-gap: 12px; */
   padding-bottom: 30px;
   user-select: none;
   cursor: pointer;
@@ -38,10 +46,11 @@
 .connectionItemsContainer .active {
   background-color: #ececec;
   color: #070707;
+  border-radius: 8px;
 }
 
 .connectionName {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
   overflow: hidden;
@@ -55,5 +64,5 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 200px;
-  font-size: 14px;
+  font-size: 12px;
 }
