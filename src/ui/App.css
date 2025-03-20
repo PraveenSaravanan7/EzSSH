@@ -3,7 +3,6 @@
   height: 100vh;
   width: 100vw;
   background-color: #0a0a0a;
-  padding-top: 28px; /* Header height */
   flex-direction: row;
   white-space: nowrap;
 }
@@ -16,4 +15,10 @@
   height: 100%;
   font-size: 2rem;
   user-select: none;
+}
+
+.terminalsContainer {
+  width: calc(100vw - 240px);
+  height: 100%;
+  display: flex;
 }

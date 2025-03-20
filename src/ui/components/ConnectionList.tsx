@@ -1,4 +1,5 @@
 import "./ConnectionList.css";
+import { Header } from "./Header";
 
 interface IConnectionListProps {
   showAddConnectionForm: () => void;
@@ -14,35 +15,35 @@ export const ConnectionList = ({
   setActiveConnection,
 }: IConnectionListProps) => {
   return (
-    <div className="connectionList">
-      <div>
-        <h3 style={{ marginTop: "8px" }}>Saved Connections</h3>
-      </div>
-
-      <div className="connectionItemsContainer">
-        {connections.map((connection, index) => (
-          <div
-            className={`connectionItem ${
-              activeConnection?.id == connection.id ? "active" : ""
-            }`}
-            key={index}
-            onClick={() => setActiveConnection(connection)}
-          >
-            <div>
-              <div className="connectionName"> {connection.name}</div>
-              <div className="connectionInfo">
-                {connection.username}@{connection.host}:{connection.port}
+    <>
+      <Header />
+      <div className="connectionList">
+        <div className="saveConnectionTitle">Saved Connections</div>
+        <div className="connectionItemsContainer">
+          {connections.map((connection, index) => (
+            <div
+              className={`connectionItem ${
+                activeConnection?.id == connection.id ? "active" : ""
+              }`}
+              key={index}
+              onClick={() => setActiveConnection(connection)}
+            >
+              <div>
+                <div className="connectionName"> {connection.name}</div>
+                <div className="connectionInfo">
+                  {connection.username}@{connection.host}:{connection.port}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="addButtonContainer">
-        <button style={{ width: "100%" }} onClick={showAddConnectionForm}>
-          + Add
-        </button>
+        <div className="addButtonContainer">
+          <button style={{ width: "100%" }} onClick={showAddConnectionForm}>
+            + Add
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

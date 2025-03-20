@@ -2,7 +2,7 @@ import "./Header.css";
 
 export const Header = () => {
   return (
-    <header>
+    <div className="header" >
       <button
         id="close"
         onClick={() => window.electron.sendFrameAction("CLOSE")}
@@ -15,6 +15,6 @@ export const Header = () => {
         id="maximize"
         onClick={() => window.electron.sendFrameAction("MAXIMIZE")}
       />
-    </header>
+    </div>
   );
 };

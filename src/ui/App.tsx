@@ -29,7 +29,6 @@ const App = () => {
 
   return (
     <>
-      <Header />
       <div className="app">
         <ConnectionList
           connections={connections}
@@ -46,7 +45,11 @@ const App = () => {
             onCancel={() => setShowAddConnection(false)}
           />
         )}
-        {!!activeConnection && <Terminal connection={activeConnection} />}
+        {!!activeConnection && (
+          <div className="terminalsContainer">
+            <Terminal connection={activeConnection} />
+          </div>
+        )}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}
       </div>
     </>

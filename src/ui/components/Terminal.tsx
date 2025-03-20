@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Terminal as XTerminal } from "xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "xterm/css/xterm.css";
+import { debounce } from "../../utils";
+import "./Terminal.css";
 
 const term = new XTerminal();
 const fitAddon = new FitAddon();
@@ -31,5 +33,12 @@ export const Terminal = ({ connection }: ITerminalProps) => {
     window.electron.runShhCmd(sshCommand + "\r");
   }, [connection]);
 
-  return <div id="terminal"></div>;
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      debounce(() => fitAddon.fit(), 100)
+    );
+  }, []);
+
+  return <div className="terminal" id="terminal"></div>;
 };
