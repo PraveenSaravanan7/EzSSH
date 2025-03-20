@@ -1,27 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Terminal as XTerminal } from "xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "xterm/css/xterm.css";
 import { debounce } from "../../utils";
 import "./Terminal.css";
 
-const term = new XTerminal();
-const fitAddon = new FitAddon();
-
-term.loadAddon(fitAddon);
-
 interface ITerminalProps {
   connection: ConnectionData;
 }
 
 export const Terminal = ({ connection }: ITerminalProps) => {
+  const terminalId = `terminal-${connection.id}`;
+
+  const term = useRef(new XTerminal()).current;
+  const fitAddon = useRef(new FitAddon()).current;
+
   useEffect(() => {
-    term.open(document.getElementById("terminal") as any);
+    term.open(document.getElementById(terminalId) as any);
+
+    term.loadAddon(fitAddon);
 
     fitAddon.fit();
 
     term.onData((e) => {
-      window.electron.runShhCmd(e);
+      window.electron.runShhCmd({ id: connection.id, cmd: e });
     });
 
     window.electron.subscribeToLogs((log) => term.write(log));
@@ -30,15 +32,21 @@ export const Terminal = ({ connection }: ITerminalProps) => {
       connection.port
     } ${connection.keyFilePath ? ` -i "${connection.keyFilePath}"` : ``}`;
 
-    window.electron.runShhCmd(sshCommand + "\r");
+    window.electron.runShhCmd({ id: connection.id, cmd: sshCommand + "\r" });
   }, [connection]);
 
   useEffect(() => {
+    term.loadAddon(fitAddon);
+
     window.addEventListener(
       "resize",
       debounce(() => fitAddon.fit(), 100)
     );
   }, []);
 
-  return <div className="terminal" id="terminal"></div>;
+  return (
+    <div className="terminalsContainer">
+      <div className="terminal" id={terminalId}></div>
+    </div>
+  );
 };

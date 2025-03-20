@@ -1,9 +1,14 @@
 type FrameWindowAction = "CLOSE" | "MAXIMIZE" | "MINIMIZE";
 
+interface IRunShhCmd {
+  cmd: string;
+  id: string;
+}
+
 type EventPayloadMapping = {
   sendFrameAction: FrameWindowAction;
   openFiles: Promise<OpenDialogReturnValue>;
-  runShhCmd: string;
+  runShhCmd: IRunShhCmd;
   "ssh-log": string;
   saveConnection: Promise<ConnectionData[]>;
   fetchConnections: ConnectionData[];
@@ -15,7 +20,7 @@ interface Window {
   electron: {
     sendFrameAction: (payload: FrameWindowAction) => void;
     openFiles: () => Promise<OpenDialogReturnValue>;
-    runShhCmd: (payload: string) => void;
+    runShhCmd: (payload: IRunShhCmd) => void;
     subscribeToLogs: (callback: (log: string) => void) => void;
     saveConnection: (
       connectionData: ConnectionData

@@ -4,6 +4,7 @@ import { ConnectionList } from "./components/ConnectionList";
 import { Header } from "./components/Header";
 import { AddConnection } from "./components/AddConnection";
 import { Terminal } from "./components/Terminal";
+import { TerminalTabs } from "./components/TerminalTabs";
 
 const App = () => {
   const [showAddConnection, setShowAddConnection] = useState(false);
@@ -46,9 +47,7 @@ const App = () => {
           />
         )}
         {!!activeConnection && (
-          <div className="terminalsContainer">
-            <Terminal connection={activeConnection} />
-          </div>
+          <TerminalTabs activeConnection={activeConnection} />
         )}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}
       </div>

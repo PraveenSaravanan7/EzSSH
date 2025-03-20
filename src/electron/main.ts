@@ -7,16 +7,11 @@ import os from "os";
 import pty from "node-pty";
 import { dataStore } from "./store.js";
 
-const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
-
-// Spawn the pseudoterminal
-const ptyProcess = pty.spawn(shell, [], {
-  name: "xterm-color",
-  cwd: process.env.HOME, // Starting directory
-  env: process.env, // Environment variables
-});
-
 app.on("ready", () => {
+  const shell = os.platform() === "win32" ? "powershell.exe" : "bash";
+
+  const ptyProcessMap: Record<string, pty.IPty> = {};
+
   const mainWindow = new BrowserWindow({
     webPreferences: {
       preload: getPreloadPath(),
@@ -48,14 +43,30 @@ app.on("ready", () => {
   });
 
   ipcMainOn("runShhCmd", (payload) => {
-    console.log(payload);
-    ptyProcess.write(payload);
+    if (!ptyProcessMap[payload.id]) {
+      const ptyProcess = pty.spawn(shell, [], {
+        // name: "xterm-color",
+        cwd: process.env.HOME,
+        env: process.env,
+      });
+
+      ptyProcess.onData((data: any) => {
+        ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
+      });
+
+      ptyProcess.onExit((e: any) => {
+        console.log(`PTY process ${payload.id} exited with code: `, e);
+      });
+
+      ptyProcessMap[payload.id] = ptyProcess;
+    }
+
+    ptyProcessMap[payload.id]?.write(payload.cmd);
   });
 
   createTray(mainWindow);
   handleCloseEvents(mainWindow);
   createMenu(mainWindow);
-  handleShhCmd(mainWindow);
 });
 
 function handleCloseEvents(mainWindow: BrowserWindow) {
@@ -110,13 +121,3 @@ ipcMainHandle("fetchConnections", () => {
     throw error;
   }
 });
-
-function handleShhCmd(mainWindow: BrowserWindow) {
-  ptyProcess.onData((data: any) => {
-    ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
-  });
-
-  ptyProcess.onExit((e: any) => {
-    console.log("PTY process exited with code:", e);
-  });
-}
