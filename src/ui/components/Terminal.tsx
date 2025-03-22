@@ -10,6 +10,7 @@ interface ITerminalProps {
 }
 
 export const Terminal = ({ connection }: ITerminalProps) => {
+  const terminalContainerId = `terminalContainer-${connection.id}`;
   const terminalId = `terminal-${connection.id}`;
 
   const term = useRef(new XTerminal()).current;
@@ -26,7 +27,9 @@ export const Terminal = ({ connection }: ITerminalProps) => {
       window.electron.runShhCmd({ id: connection.id, cmd: e });
     });
 
-    window.electron.subscribeToLogs((log) => term.write(log));
+    window.electron.subscribeToLogs((e) => {
+      if (e.id === connection.id) term.write(e.log);
+    });
 
     let sshCommand = `ssh ${connection.username}@${connection.host} -p ${
       connection.port
@@ -45,7 +48,7 @@ export const Terminal = ({ connection }: ITerminalProps) => {
   }, []);
 
   return (
-    <div className="terminalsContainer">
+    <div className="terminalContainer" id={terminalContainerId}>
       <div className="terminal" id={terminalId}></div>
     </div>
   );

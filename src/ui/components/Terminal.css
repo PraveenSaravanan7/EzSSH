@@ -2,8 +2,9 @@
   width: 100%;
 }
 
-.terminalsContainer {
+.terminalContainer {
   width: calc(100vw - 240px);
-  height: 100%;
+  height: calc(100vh - 40px);
   display: flex;
+  margin-top: 40px;
 }

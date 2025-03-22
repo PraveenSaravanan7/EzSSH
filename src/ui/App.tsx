@@ -47,7 +47,12 @@ const App = () => {
           />
         )}
         {!!activeConnection && (
-          <TerminalTabs activeConnection={activeConnection} />
+          <TerminalTabs
+            activeConnection={activeConnection}
+            setActiveConnection={(activeConnection) =>
+              setActiveConnection(activeConnection)
+            }
+          />
         )}
         {!showAddConnection && !activeConnection && <WelcomeMessage />}
       </div>

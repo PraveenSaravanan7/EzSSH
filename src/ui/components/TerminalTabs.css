@@ -1,0 +1,21 @@
+.tabList {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  white-space: nowrap;
+  width: calc(100vw - 240px);
+  height: 40px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.tab {
+  padding: 14px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: red;
+}

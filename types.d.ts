@@ -5,11 +5,16 @@ interface IRunShhCmd {
   id: string;
 }
 
+interface ITermLogs {
+  log: string;
+  id: string;
+}
+
 type EventPayloadMapping = {
   sendFrameAction: FrameWindowAction;
   openFiles: Promise<OpenDialogReturnValue>;
   runShhCmd: IRunShhCmd;
-  "ssh-log": string;
+  "ssh-log": ITermLogs;
   saveConnection: Promise<ConnectionData[]>;
   fetchConnections: ConnectionData[];
 };
@@ -21,7 +26,7 @@ interface Window {
     sendFrameAction: (payload: FrameWindowAction) => void;
     openFiles: () => Promise<OpenDialogReturnValue>;
     runShhCmd: (payload: IRunShhCmd) => void;
-    subscribeToLogs: (callback: (log: string) => void) => void;
+    subscribeToLogs: (callback: (log: ITermLogs) => void) => void;
     saveConnection: (
       connectionData: ConnectionData
     ) => Promise<ConnectionData[]>;

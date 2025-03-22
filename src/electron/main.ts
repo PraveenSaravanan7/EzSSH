@@ -51,7 +51,10 @@ app.on("ready", () => {
       });
 
       ptyProcess.onData((data: any) => {
-        ipcWebContentsSend("ssh-log", mainWindow.webContents, data);
+        ipcWebContentsSend("ssh-log", mainWindow.webContents, {
+          id: payload.id,
+          log: data,
+        });
       });
 
       ptyProcess.onExit((e: any) => {
