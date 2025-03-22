@@ -1,0 +1,47 @@
+/* Modal.css */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-container {
+  color: #fff;
+  background: #121212;
+  border-radius: 8px;
+  padding: 20px;
+  width: 480px;
+  box-shadow: 0 4px 10px rgba(128, 128, 128, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1a1a1a;
+  /* padding-bottom: 10px; */
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-body {
+  margin: 16px 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.modal-footer {
+  padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #1a1a1a;
+}
