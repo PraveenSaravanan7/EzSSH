@@ -18,7 +18,7 @@ export const ConnectionList = ({
     <>
       <Header />
       <div className="connectionList">
-        <div className="saveConnectionTitle">Saved Connections</div>
+        <div className="saveConnectionTitle">Connections</div>
         <div className="connectionItemsContainer">
           {connections.map((connection, index) => (
             <div
