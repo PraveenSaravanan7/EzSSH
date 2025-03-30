@@ -14,7 +14,10 @@ export const Terminal = ({ connection }: ITerminalProps) => {
   const terminalId = `terminal-${connection.id}`;
 
   const term = useRef(
-    new XTerminal({ theme: { background: "#0a0e15" } })
+    new XTerminal({
+      fontSize: 16,
+      theme: { background: "#0a0e15" },
+    })
   ).current;
   const fitAddon = useRef(new FitAddon()).current;
 

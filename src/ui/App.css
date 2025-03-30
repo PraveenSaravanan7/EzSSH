@@ -5,6 +5,9 @@
   background-color: #0a0e15;
   flex-direction: row;
   white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 }
 
 .welcomeMessage {
@@ -16,4 +19,3 @@
   font-size: 2rem;
   user-select: none;
 }
-
