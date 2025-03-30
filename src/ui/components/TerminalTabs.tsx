@@ -70,6 +70,8 @@ export const TerminalTabs = ({
             onClick={() => setActiveConnection(connection)}
           >
             {connection.name}
+
+            <div className="tabClose">&times;</div>
           </div>
         ))}
       </div>
